@@ -17,6 +17,7 @@ On the command prompt run the following commands:
  $ cd newsletterAudibene
 
  $ npm install
+ $ start mongodb service
 
  ```
  Finally, start and build the application:
