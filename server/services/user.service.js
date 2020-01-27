@@ -65,13 +65,13 @@ async function updateUserService(data) {
 
 
 /**
- * Get My users subscribed on newsletter Service
+ * Get list users subscribed on newsletter Service
  */
 
 async function getListUsersService() {
     try {
 
-        const user = await User.find()
+        const user = await User.find({isSubscribed:true})
       
         if (user == null) {
             return res.status(404).json({ message: 'Cant find user' })
@@ -150,12 +150,14 @@ async function subscibeToChannelService(data) {
 async function unsubscribeFromNewsletterService(data) {
     try {
 
-        const user = await User.findOne({ email: data.body.email });
+        const user = await User.findOne({ email: data.params.email });
         if (user == null) {
             return res.status(404).json({ message: 'Cant find user' })
         }
 
-       user.isSubscribed=false;
+        user.isSubscribed=false;
+        user.name='update';
+        console.log('user',user.isSubscribed);
         user.save();
 
         return user
@@ -173,7 +175,7 @@ async function unsubscribeFromNewsletterService(data) {
 async function subscribeToNewsletterService(data) {
     try {
 
-        const user = await User.findOne({ email: data.body.email });
+        const user = await User.findOne({ email: data.params.email });
         if (user == null) {
             return res.status(404).json({ message: 'Cant find user' })
         }

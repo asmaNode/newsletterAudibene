@@ -84,7 +84,7 @@ export function subscribeToChannel(req, res, next) {
 
  export function subscribeToNewsletter(req, res, next) {
    
-     userService.subscibeToChannelService(req)
+     userService.subscribeToNewsletterService(req)
          .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
          .catch(err => res.json(err));
  }
@@ -94,8 +94,8 @@ export function subscribeToChannel(req, res, next) {
   */
 
  export function unsubscribeFromNewsletter(req, res, next) {
-  
-     userService.subscibeToChannelService(req)
+  console.log('unsubscribe');
+     userService.unsubscribeFromNewsletterService(req)
          .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
          .catch(err => res.json(err));
  }

@@ -155,7 +155,7 @@ router.route('/unsubscribeFrom')
 /*** subscribe from channel Route***/
 router.route('/subscribeToNewsletter/:email')
 
-.post((req, res) => {
+.put((req, res) => {
  
     userCtrl.subscribeToNewsletter(req, res);
 });
@@ -163,7 +163,7 @@ router.route('/subscribeToNewsletter/:email')
 /*** unSubscribe from channel Route***/
 router.route('/unSubscribeToNewsletter/:email')
 
-.post((req, res) => {
+.put((req, res) => {
  
     userCtrl.unsubscribeFromNewsletter(req, res);
 });

@@ -42,9 +42,9 @@ app.use(joiErrorHandler);
  */
 var newsletterMailer = require('./config/mailer');
 var schedule = require('node-schedule');
-//uncomment this to cancel Job
+/**uncomment this to cancel Job**/
 //schedule.cancelJob();
-//Start the job every day at 8: am (7 with GMT)
+/**Start the job every day at 8: am (7 with GMT)**/
 schedule.scheduleJob('* 0 7 * * *', newsletterMailer);
 
 // Error Handler
