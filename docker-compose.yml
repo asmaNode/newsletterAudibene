@@ -1,0 +1,60 @@
+version: '2'
+networks:
+  onetch_evl_network:
+    driver: bridge
+services:
+  onetch_evl_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: onetch_evls_phpmyadmin_lcl_dev
+    restart: always
+    ports:
+      - 3003:80
+    links:
+      - onetch_evls_mysql_lcl_dev
+    networks:
+      - onetch_evl_network
+    environment:
+      PMA_HOST: onetch_evls_mysql_lcl_dev
+  onetch_evl_mysql:
+    image: mysql:5.7
+    container_name: onetch_evls_mysql_lcl_dev
+    hostname: onetch_evls_mysql_lcl_dev
+    restart: always
+    volumes:
+      - /dockervolum/ONETECH_evalos/local_dev/Evalos_Backend/volumes/mysql-data/:/var/lib/mysql
+    restart: always
+    networks:
+      - onetch_evl_network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 3002:3306
+  onetch_evl_bck_lcl_dev:
+    image: devops.sofia.local:18083/evalos-backend:${TAG_DEV}
+    restart: always
+    container_name: onetch_evl_bck_lcl_dev
+    hostname: api.evalos.dev.runbot.sofia.local
+    networks:
+      - onetch_evl_network
+    ports:
+      - 3005:3000
+    environment:
+      - VIRTUAL_HOST=api.evalos.dev.runbot.sofia.local
+      - VIRTUAL_PORT=3000
+#    command: pm2 start npm -- start
+
+  onetch_evl_bck_lcl_prd:
+    image: devops.sofia.local:18083/evalos-backend:${TAG_PREPROD}
+    restart: always
+    container_name: onetch_evl_bck_lcl_prd
+    hostname: api.evalos.preprod.runbot.sofia.local
+    networks:
+      - onetch_evl_network
+    ports:
+      - 3004:3000
+    environment:
+      - VIRTUAL_HOST=api.evalos.preprod.runbot.sofia.local
+      - VIRTUAL_PORT=3000

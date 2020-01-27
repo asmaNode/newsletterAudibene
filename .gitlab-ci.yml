@@ -1,0 +1,62 @@
+stages:
+# - code_quality_analysis
+  - build
+  - deploy  
+  - notify
+build-dev:
+  stage: build
+  # Cache modules in between jobs
+  only:
+    #set trigger for CICD if tag ^staging- on current branch
+    - /^dev-.*$/
+  before_script:
+    - docker info
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+  script:
+    - docker build -t devops.sofia.local:18083/evalos-backend:${CI_COMMIT_TAG} .
+    - docker push devops.sofia.local:18083/evalos-backend:${CI_COMMIT_TAG}
+    
+build-preprod:
+  stage: build
+  # Cache modules in between jobs
+  only:
+    #set trigger for CICD if tag ^staging- on current branch
+    - /^preprod-.*$/
+  before_script:
+    - docker info
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+  script:
+    - docker build -t devops.sofia.local:18083/evalos-backend:${CI_COMMIT_TAG} .
+    - docker push devops.sofia.local:18083/evalos-backend:${CI_COMMIT_TAG}
+deploy-preprod:
+  stage: deploy
+  before_script:    
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"   
+    - ssh-add  ~/.ssh/id_rsa    
+    - ssh-keyscan -H $DEPLOYMENT_SERVER_IP >> ~/.ssh/known_hosts
+    - chmod 700 ~/.ssh
+  script:
+    - scp -r ./.env ./docker-compose.yml ONETECH_evalos@${DEPLOYMENT_SERVER_IP}:/dockervolum/ONETECH_evalos/Evalos_Backend/
+    - ssh ONETECH_evalos@$DEPLOYMENT_SERVER_IP "cd /dockervolum/ONETECH_evalos/Evalos_Backend/; docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY};docker-compose stop onetch_evl_bck_lcl_prd; docker-compose pull onetch_evl_bck_lcl_prd; docker-compose up -d onetch_evl_bck_lcl_prd"  
+  only:
+    #set trigger for CICD if tag ^staging- on develop branch
+    - /^deployprd-.*$/
+deploy-dev:
+  stage: deploy
+  before_script:    
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - eval "$(ssh-agent -s)"   
+    - ssh-add  ~/.ssh/id_rsa    
+    - ssh-keyscan -H $DEPLOYMENT_SERVER_IP >> ~/.ssh/known_hosts
+    - chmod 700 ~/.ssh
+  script:
+    - scp -r ./.env ./docker-compose.yml ONETECH_evalos@${DEPLOYMENT_SERVER_IP}:/dockervolum/ONETECH_evalos/Evalos_Backend/
+    - ssh ONETECH_evalos@$DEPLOYMENT_SERVER_IP "cd /dockervolum/ONETECH_evalos/Evalos_Backend/; docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY};docker-compose stop onetch_evl_bck_lcl_dev; docker-compose pull onetch_evl_bck_lcl_dev; docker-compose up -d onetch_evl_bck_lcl_dev"  
+  only:
+    #set trigger for CICD if tag ^staging- on develop branch
+    - /^deploydev-.*$/

@@ -1,0 +1,7 @@
+webpack*.js
+node_modules
+logs
+*.logs
+dist
+.env
+backup
