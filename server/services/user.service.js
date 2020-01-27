@@ -39,7 +39,7 @@ async function createNewUserService(data) {
  * Update user service
  */
 async function updateUserService(data) {
-   
+
 
     try {
         const userUpdated = await User.findOne({ email: data.params.email }, function (err, user) {
@@ -58,7 +58,7 @@ async function updateUserService(data) {
 
 
     } catch (err) {
-      
+
         return (err)
     }
 }
@@ -71,8 +71,8 @@ async function updateUserService(data) {
 async function getListUsersService() {
     try {
 
-        const user = await User.find({isSubscribed:true})
-      
+        const user = await User.find({ isSubscribed: true })
+
         if (user == null) {
             return res.status(404).json({ message: 'Cant find user' })
         }
@@ -155,9 +155,8 @@ async function unsubscribeFromNewsletterService(data) {
             return res.status(404).json({ message: 'Cant find user' })
         }
 
-        user.isSubscribed=false;
-        user.name='update';
-        console.log('user',user.isSubscribed);
+        user.isSubscribed = false;
+
         user.save();
 
         return user
@@ -180,7 +179,7 @@ async function subscribeToNewsletterService(data) {
             return res.status(404).json({ message: 'Cant find user' })
         }
 
-       user.isSubscribed=true;
+        user.isSubscribed = true;
         user.save();
 
         return user

@@ -18,8 +18,7 @@
     "newline-before-return": 2,
     "linebreak-style": [2, "unix"],
     "camelcase": [2, {"properties": "never"}],
-    "quotes": [2, "single", {"allowTemplateLiterals": true}],
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error",
+    "quotes": [2, "single", {"allowTemplateLiterals": true}]
+ 
   }
 }

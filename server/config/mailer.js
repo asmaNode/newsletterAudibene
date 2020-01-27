@@ -44,10 +44,8 @@ async function getAll() {
 
 
       };
-      sgMail.send(msg).then(sent,err => {console.log("Email sent") ;
-      if (err){
-        console.log('err connection to sendgrid');
-      }
+      sgMail.send(msg).then(sent => {console.log("Email sent") ;
+    
     
     });
     })
