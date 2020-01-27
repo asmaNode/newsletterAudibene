@@ -30,10 +30,14 @@ On the command prompt run the following commands:
  ```
 
 ### 3. Usage
+The script with send newsletter every day at 8 am to change it you must edit time in shedulejob in app.js
 
-URL : http://localhost:3000/
-Postman documentation Api : Please import collection from this link
+Postman documentation Api : Please import Api collection from this link
 https://www.getpostman.com/collections/1c330d4987f61b937a38
+
+Sendgrid account :
+username:testSendGrid11
+password: SfrA123.0987 
 
 
 

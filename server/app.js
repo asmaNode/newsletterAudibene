@@ -36,15 +36,16 @@ app.get('*', (req, res) => {
 app.use(joiErrorHandler);
 
 
+
 /****
  * Send Email newsletter
  */
 var newsletterMailer = require('./config/mailer');
 var schedule = require('node-schedule');
-//Cancel Job
+//uncomment this to cancel Job
 schedule.cancelJob();
-//Start the job every day at 8: am
-schedule.scheduleJob('* * 17 * * *', newsletterMailer);
+//Start the job every day at 8: am (7 with GMT)
+//schedule.scheduleJob('* 0 7 * * *', newsletterMailer);
 
 // Error Handler
 app.use(errorHandler.notFoundErrorHandler);

@@ -6,7 +6,9 @@ module.exports = {
     updateUserService,
     getListUsersService,
     subscibeToChannelService,
-    unsubscibeFromChannelService
+    unsubscibeFromChannelService,
+    unsubscribeFromNewsletterService,
+    subscribeToNewsletterService
 
 };
 /***
@@ -141,5 +143,52 @@ async function subscibeToChannelService(data) {
 
 
 }
+
+/**
+ * wsubscribe from newsletter
+ */
+async function unsubscribeFromNewsletterService(data) {
+    try {
+
+        const user = await User.findOne({ email: data.body.email });
+        if (user == null) {
+            return res.status(404).json({ message: 'Cant find user' })
+        }
+
+       user.isSubscribed=false;
+        user.save();
+
+        return user
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+
+
+}
+
+/**
+ * Unsubscribe from newsletter
+ */
+async function subscribeToNewsletterService(data) {
+    try {
+
+        const user = await User.findOne({ email: data.body.email });
+        if (user == null) {
+            return res.status(404).json({ message: 'Cant find user' })
+        }
+
+       user.isSubscribed=true;
+        user.save();
+
+        return user
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+
+
+}
+
 
 

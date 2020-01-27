@@ -24,10 +24,9 @@ export function createNewUser(req, res, next) {
  * @returns {*}
  */
 export function updateUser(req, res, next) {
-    console.log('req.params',req.params.email);
-
+    
     userService.updateUserService(req)
-        .then(user => user? res.json(user) : res.status(400).json({ message: 'invalid data' }))
+        .then(user => user? res.json({message:'User updated with success'}) : res.status(400).json({ message: 'invalid data' }))
         
         .catch(err => next(err));
 }
@@ -72,10 +71,31 @@ export function unsubscribeFromChannel(req, res, next) {
  * @returns {*}
  */
 export function subscribeToChannel(req, res, next) {
-    console.log('subscribe from channel');
+ 
      userService.subscibeToChannelService(req)
          .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
          .catch(err => res.json(err));
  }
 
 
+ /**
+  * subscribe to newsletter
+  */
+
+ export function subscribeToNewsletter(req, res, next) {
+   
+     userService.subscibeToChannelService(req)
+         .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
+         .catch(err => res.json(err));
+ }
+
+ /**
+  * unSubscribe to newsletter
+  */
+
+ export function unsubscribeFromNewsletter(req, res, next) {
+  
+     userService.subscibeToChannelService(req)
+         .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
+         .catch(err => res.json(err));
+ }

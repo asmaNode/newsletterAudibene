@@ -26,17 +26,16 @@ async function getDataFromReddit(listNewsletterUsers) {
 async function getAll() {
   const listNewsletterUsers = await userService.getListUsersService();
   getDataFromReddit(listNewsletterUsers).then(result => {
-    console.log('finalresult 2 user', result[0].user.email);
+   
     result.map(item => {
-      console.log('item.user.email', item.user.email);
-      console.log('item. result', item.result)
+     
       const msg = {
         to: item.user.email,
         from: 'asma1ayari@gmail.com',
         subject: 'Newsletter audibene',
         text: 'and easy to do anywhere, even with Node.js',
         html: '<strong>Newsletter audibene</strong>',
-        templateId: 'd-d71b121df4e249f0bca4e78af263ae87',
+        templateId: process.env.TEMPLATE_SENDGRID_ID,
         dynamic_template_data: {
           name: item.user.name,
           listChannel: item.result
@@ -45,7 +44,12 @@ async function getAll() {
 
 
       };
-      sgMail.send(msg).then(sent => console.log("Email sent"));
+      sgMail.send(msg).then(sent,err => {console.log("Email sent") ;
+      if (err){
+        console.log('err connection to sendgrid');
+      }
+    
+    });
     })
 
   });
