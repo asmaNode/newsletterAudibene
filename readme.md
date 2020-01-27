@@ -1,4 +1,4 @@
-MySQL, Express, React/Redux and Node Boilerplate in ES6/ES7
+Newsletter reddit Node js  SendGrid project
 
 ## Get Started
 
